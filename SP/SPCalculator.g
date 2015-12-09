@@ -34,3 +34,12 @@ exp returns [SPTree tree] : //Define an arithmetical expression here
 
 // parser rules start with lowercase letters, lexer rules with uppercase
 TERMINATION: '<>';
+NUMBER: [0-9]+;
+WHITE_SPACE: [ \t\n\r]+ -> skip;
+PLUS: '+';
+MINUS: '-';
+MUL: '*';
+DIV: '/';
+DOLLAR: '$';
+OPEN_PAREN: '(';
+CLOSE_PAREN: ')';
