@@ -55,6 +55,18 @@ exp returns [SPTree tree] :
 			   		{ $tree = new SPTree($e2.text);
 			   		$tree.insertChild($e1.tree);
 			   		$tree.insertChild($e3.tree); }
+			   		
+			   | e1=NUMBER  //terminate with number
+			   		{ $tree = new SPTree($e1.text); }
+			   		
+			   | e1=PLUS e2=exp  //ignore extra plus signs
+			   		{ $tree = $e2.tree; }
+			   | e1=MINUS e2=exp  //flip sign with minus
+			   		{ $tree = new SPTree($e1.text);
+			   		newTree = new SPTree("0");
+			   		$tree.insertChild(newTree);
+			   		$tree.insertChild($e2.tree); }
+			   		
 			  ;
 
 // parser rules start with lowercase letters, lexer rules with uppercase
