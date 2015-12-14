@@ -26,4 +26,29 @@ typedef enum {
 typedef struct sp_tree SPTREE;
 
 
+/**
+ * Creates a new tree, and returns a pointer to it. The input msg
+ * is a pointer to SPTREE_ERROR_MSG, if it is NULL it will be ignored,
+ * otherwise its value will contain the relevant error msg.
+ *
+ */
+SPTREE* spCreateTree(SPTREE_ERROR_MSG* msg);
+
+/**
+ * Frees all memory associated with the input tree, and it will no
+ * longer be valid for use. If input is NULL, no effect.
+ */
+void spDestroyTree(SPTREE* tree);
+
+/**
+ *bla
+ */
+char* spGetValue(SPTREE* tree, SPTREE_ERROR_MSG* msg);
+
+//TODO getChild(index)
+
+//TODO insertChild(child)
+
+//TODO deleteChild(index)
+
 #endif /* SPTREE_H_ */
