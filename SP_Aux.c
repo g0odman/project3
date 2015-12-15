@@ -31,6 +31,45 @@ SP_TREE *split(char *line){
     //Value for node
     SP_TREE *new;
 
+    //-----------------
+//    size_t index_arr[MAX_CHILD_NUM];
+//    int str_pos = 1, arr_pos = 0;
+//    bool cont = true;
+//
+//    //find end of first value:
+//    while(line[str_pos] != '(' && line[str_pos] != ')'
+//    		&& line[str_pos] != '\0') {
+//    	str_pos++;
+//    }
+//    if(line[str_pos] == '\0') {
+//    	index_arr[arr_pos] = -1;
+//    	cont = false;
+//    }
+//    else if(line[str_pos] == ')') {
+//    	index_arr[arr_pos]=str_pos;
+//    	cont = false;
+//    }
+//    else {
+//    	index_arr[arr_pos]=str_pos;
+//    }
+//
+//    //find start and end of each child:
+//	for(arr_pos = 1; arr_pos<MAX_CHILD_NUM && cont; arr_pos++){
+//		int depth = 1;
+//		while(depth > 0){
+//			str_pos++;
+//			if(line[str_pos] == '(') { depth++; }
+//			else if(line[str_pos] == ')') { depth--; }
+//			else if(line[str_pos] == '\0') {
+//				index_arr[arr_pos] = -1;
+//				cont = false;
+//			}
+//		}
+//		str_pos++; //increment once found end
+//		index_arr[arr_pos] = str_pos;
+//	}
+    //-----------------
+
     if((new = spTreeCreate()) == NULL){
         printf("Unexpected error occured!");
         exit(EXIT_FAILURE);
