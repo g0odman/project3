@@ -69,6 +69,39 @@ SP_TREE* spTreeCreate();
  * 					 If tree==NULL nothing happens.
  */
 void spTreeDestroy(SP_TREE* tree);
-char * getChildAtIndex(SP_TREE *tree,int index);
+/**
+ * Pushes a child to the tree.
+ * @param
+ * SP_TREE* Tree - Pointer to a Tree into which the child will be inserted.
+ *
+ * SP_TREE *child - child to be inserted.
+ *
+ * @return -
+ *          boolean indicating whether the push was succesful.
+ */
+void spTreePush(SP_TREE* tree,SP_TREE *child);
+/**
+ * Returns a copy of the string of the root node.
+ *
+ * @param
+ * SP_TREE* Tree - Pointer to a Tree from which to extract string.
+ * 
+ * @return
+ *              A copy of the substring representing the root.
+ */
+
 char * getRootStr(SP_TREE *tree);
+
+/**
+ * Returns a copy of the string of the index-th child.
+ *
+ * @param
+ * SP_TREE* Tree - Pointer to a Tree from which to take the child.
+ *
+ * int index - Child for which value is to be returned.
+ * 
+ * @return
+ *              A copy of the substring representing the root.
+ */
+char * getChildAtIndex(SP_TREE *tree,int index);
 #endif /* SP_TREE_H_ */

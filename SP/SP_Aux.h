@@ -17,18 +17,17 @@
 void parse(char * line);
 
 /**
- * Recieve a string token and check its type
+ * create SP_TREE from string
  *
  *
  * @param
- * 		char * token - An input token. Checks if it is valid,
- * 				and if so then find its type.
+ * 		string line - An input line, split it according to 
+ * 				LISP style brackets.
+ * 				print error.
  * @return
- *              The type of the token (as an enum).
+ *              A SP_TREE representing the string.
  */
-SP_TREE_TYPE getType(char *s);
-
-bool isNumber(char * s);
+SP_TREE *split(char *line);
 /**
  * Perform the given mathematical operation on the two input numbers.
  *
@@ -38,28 +37,49 @@ bool isNumber(char * s);
  * @param
  * 		double y - the second number;
  * @param
- * 		SP_STACK_ELEMENT_TYPE op - The operation to perform.
- * @param
- * 		double * ans - A pointer into which to store the result.
+ * 		SP_TREE_TYPE op - The operation to perform.
  * @return
- *              If the operation was valid, then return true, and store result
- *              		in *ans. Otherwise return false.
+ *              The result of the mathematical operation
  */
 double operate(double x,double y, SP_TREE_TYPE op);
+/**
+ * Recieve a string and check its type
+ *
+ *
+ * @param
+ * 		char * token - An input token. Checks if it is valid,
+ * 				and if so then find its type.
+ * @return
+ *              The type of the token (as an enum).
+ */
+SP_TREE_TYPE getType(char *s);
+/**
+ * Check if a given mathematical operation is valid.
+ *
+ *
+ * @param
+ * 		double x - The first number
+ * @param
+ * 		double y - the second number;
+ * @param
+ * 		SP_TREE_TYPE op - The operation to perform.
+ * @return
+ *              Whether the operation was valid or not.
+ */
+
+bool isValid(SP_TREE_TYPE op, double x, double y);
 
 /**
- * Performs a single mathematical operation on the two stacks, as described in
- * the assignement guidelines.
+ * Recursively evaluate the tree.
  *
  *
  * @param
- * 		SP_STACK ** numbers - A (pointer to) stack containing the numbers
+ * 		SP_TREE *tree - The tree to evaluate.
  * @param
- * 		SP_STACK ** operations - A (pointer to) stack containing the operations.
+ * 		bool *valid - A boolean checking whether the result was valid or not.
  * @return
- *              Perform the top operation in operations, on the top two values in numbers
- *                                  If it was a succes return true, else false.
+ *          The result of the mathematical operation from the tree 
+ *                  down.
  */
 double spTreeEval(SP_TREE *tree,bool *valid);
-SP_TREE *split(char *line);
 #endif /* SP_Aux_H_ */

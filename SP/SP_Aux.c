@@ -36,18 +36,25 @@ SP_TREE *split(char *line){
         printf("Unexpected error occured!");
         exit(EXIT_FAILURE);
     }
+
+    //j is the number of brackets, i is the current place
     int j = 1,i=1;
+
     while(j !=0 ){
+        //Magic!
         if(line[i] == '(' && (j++) == 1){
-            new->children[new->size]=split(line+i);
-            new->size ++;
+            spTreePush(tree,split(line+i));
         }
+        //Go up one level
         if(line[i] == ')')
             j--;
         i++;
     }
+    //Copy string
     new->value = malloc(i+1);
     strncpy(new->value,line,i);
+
+    //update type
     new->type = getType(getRootStr(new));
     return new;
 }
@@ -72,7 +79,7 @@ double operate(double x, double y, SP_TREE_TYPE op){
 SP_TREE_TYPE getType(char *s){
     
 	//Check if it is a number
-    if(isNumber(s)) { return NUMBER; }
+    if(strlen(s) != 1) { return NUMBER; }
     
     //return the correct value
     switch(s[0]) {
@@ -90,13 +97,6 @@ SP_TREE_TYPE getType(char *s){
              return UNKNOWN;
     }
 }
-bool isNumber(char * s){
-    for(int i = 0; i < strlen(s);i++){
-         if(s[i] < '0' || s[i] > '9')
-             return false;
-    }
-     return true;
-}
 bool isValid(SP_TREE_TYPE op, double x, double y){
     switch(op){
         case PLUS:
@@ -112,15 +112,23 @@ bool isValid(SP_TREE_TYPE op, double x, double y){
     }
 }
 double spTreeEval(SP_TREE *tree,bool * valid){
+    //Error occured
     if(!*valid)
         return 0;
+
+    //Leaf
     if(tree->type == NUMBER && tree->size == 0)
         return atoi(getRootStr(tree));
+
+    //Array representing the calculated values of the children
     double * ans = malloc(10*sizeof(double));
+
     for(int i = 0; i < tree->size; i++){
         ans[i] = spTreeEval(tree->children[i],valid);
     }
+
     double  out = ans[0];
+
     for(int i=1; i <tree->size; i++){
         if(!isValid(tree->type,out,ans[i])){
            *valid = false;

@@ -2,18 +2,11 @@
 #include "SP_Tree.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 /**
  * Create a new empty Tree.
  *
- * Messages:
- * 		SP_TREE_ERROR_ALLOCATION_FAILED - In case allocation failed.
- * 		SP_TREE_SUCCESS - In case creation of the Tree succeeded.
- *
- * @param
- * 		SP_TREE_MSG* msg - Pointer which has the memory location where the message
- * 					   		will be stored. if msg==NULL then the function doesn't
- * 							set the value of *msg.
  * @return
  *		A pointer to a new empty Tree, if any error occurred NULL is returned.
  */
@@ -47,8 +40,39 @@ void spTreeDestroy(SP_TREE* tree) {
             if(tree->children[i] !=NULL)
 		spTreeDestroy(tree->children[i]);
         }
+        free(tree->children);
+        free(tree->value);
 	free(tree);
 }
+/**
+ * Pushes a child to the tree.
+ * @param
+ * SP_TREE* Tree - Pointer to a Tree into which the child will be inserted.
+ *
+ * SP_TREE *child - child to be inserted.
+ *
+ * @return -
+ *          boolean indicating whether the push was succesful.
+ */
+void spTreePush(SP_TREE* tree,SP_TREE *child) {
+	
+    if(child == NULL)
+        return false;
+    if(tree->size == 10)
+        return false;
+    tree->children[tree->size] = child;
+    tree->size ++;
+    return true;
+}
+/**
+ * Returns a copy of the string of the root node.
+ *
+ * @param
+ * SP_TREE* Tree - Pointer to a Tree from which to extract string.
+ * 
+ * @return
+ *              A copy of the substring representing the root.
+ */
 
 char * getRootStr(SP_TREE *tree){
     int length = (int) (strchr(tree->value,')') - tree->value-1);
@@ -57,6 +81,17 @@ char * getRootStr(SP_TREE *tree){
     return ans;
 }
 
+/**
+ * Returns a copy of the string of the index-th child.
+ *
+ * @param
+ * SP_TREE* Tree - Pointer to a Tree from which to take the child.
+ *
+ * int index - Child for which value is to be returned.
+ * 
+ * @return
+ *              A copy of the substring representing the root.
+ */
 char * getChildAtIndex(SP_TREE *tree,int index){
     char * value = tree->children[index]->value;
     char * ans = malloc(strlen(value));
