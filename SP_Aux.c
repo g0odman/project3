@@ -8,7 +8,7 @@
  *  all necsesary things.
  */
 void parse(char * line){
-    if(strncmp(line,"<>",2) == 0 && strlen(line) == 3){
+    if(strncmp(line,"(<>)", 4) == 0 && strlen(line) == 5){
         if(printf("Exiting...\n")!= 0){
             exit(EXIT_FAILURE);
         }
@@ -36,19 +36,22 @@ SP_TREE *split(char *line){
         exit(EXIT_FAILURE);
     }
 
-    //j is the number of brackets, i is the current place
+    //j is the number of brackets seen, i is the current place
     int j = 1,i=1;
 
-    while(j !=0 ){
-        //Magic!
-        if(line[i] == '(' && (j++) == 1){
-            spTreePush(new,split(line+i));
+    while(j > 0){
+        //recursively parse children:
+        if(line[i] == '('){
+        	j++;
+        	if(j == 1)
+        		spTreePush(new,split(line+i)); //test whether this works!
         }
         //Go up one level
         if(line[i] == ')')
             j--;
         i++;
     }
+
     //Copy string
     new->value = malloc(i+1);
     strncpy(new->value,line,i);
@@ -97,6 +100,7 @@ SP_TREE_TYPE getType(char *s){
              return UNKNOWN;
     }
 }
+
 bool isValid(SP_TREE_TYPE op, double x, double y){
     switch(op){
         case PLUS:
@@ -111,15 +115,18 @@ bool isValid(SP_TREE_TYPE op, double x, double y){
             return false;
     }
 }
-double spTreeEval(SP_TREE *tree,bool * valid){
-    //Leaf
+
+double spTreeEval(SP_TREE *tree, bool * valid){
+    //leaf:
     if(tree->type == NUMBER && tree->size == 0)
         return atoi(getRootStr(tree));
+
+    //calculate op on children:
     double out = atoi(getRootStr(tree->children[0]));
     if(tree->size ==1)
         return operate(0,out,tree->type,valid);
 
-    for(int i=1; i <tree->size; i++){
+    for(int i=1; i < tree->size; i++){
         out = operate(out,spTreeEval(tree->children[i],valid),tree->type,valid);
     }
     return out;

@@ -19,6 +19,7 @@ SP_TREE* spTreeCreate() {
     
     //initialize:
     s->children = malloc(sizeof(SP_TREE *)*10);
+    memset(s->children, 0, 10);
     s->value = NULL;
     return s;
 }
@@ -32,18 +33,20 @@ SP_TREE* spTreeCreate() {
  * 					 If Tree==NULL nothing happens.
  */
 void spTreeDestroy(SP_TREE* tree) {
-	
 	//check node isn't null:
 	if(tree == NULL) { return; }
 	
-        for(int i =0;i <10;i++){
-            if(tree->children[i] !=NULL)
-		spTreeDestroy(tree->children[i]);
+    for(int i =0; i<10; i++){
+        if(tree->children[i] != NULL){
+        	spTreeDestroy(tree->children[i]);
         }
-        free(tree->children);
-        free(tree->value);
+    }
+
+    free(tree->children);
+    if(tree->value != NULL){ free(tree->value); }
 	free(tree);
 }
+
 /**
  * Pushes a child to the tree.
  * @param
@@ -55,15 +58,18 @@ void spTreeDestroy(SP_TREE* tree) {
  *          boolean indicating whether the push was succesful.
  */
 bool spTreePush(SP_TREE* tree,SP_TREE *child) {
-	
     if(child == NULL)
         return false;
+
     if(tree->size == 10)
         return false;
+
     tree->children[tree->size] = child;
     tree->size ++;
+
     return true;
 }
+
 /**
  * Returns a copy of the string of the root node.
  *
@@ -73,7 +79,6 @@ bool spTreePush(SP_TREE* tree,SP_TREE *child) {
  * @return
  *              A copy of the substring representing the root.
  */
-
 char * getRootStr(SP_TREE *tree){
     char * close = strchr(tree->value + 1,')'), * open = strchr(tree->value + 1,'(');
     int length = (int)( ( close < open ? close: open )  - tree->value -1);
