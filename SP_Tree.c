@@ -21,6 +21,7 @@ SP_TREE* spTreeCreate() {
     s->children = malloc(sizeof(SP_TREE *)*MAX_CHILD_NUM);
     memset(s->children, 0, MAX_CHILD_NUM); //set to NULL
     s->value = NULL;
+    s->size = 0;
     return s;
 }
     
