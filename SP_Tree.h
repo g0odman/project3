@@ -79,7 +79,7 @@ void spTreeDestroy(SP_TREE* tree);
  * @return -
  *          boolean indicating whether the push was succesful.
  */
-void spTreePush(SP_TREE* tree,SP_TREE *child);
+bool spTreePush(SP_TREE* tree,SP_TREE *child);
 /**
  * Returns a copy of the string of the root node.
  *
