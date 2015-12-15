@@ -10,7 +10,6 @@
 void parse(char * line){
     if(strncmp(line,"<>",2) == 0 && strlen(line) == 3){
         if(printf("Exiting...\n")!= 0){
-            printf("Unexpected error occured!");
             exit(EXIT_FAILURE);
         }
         exit(EXIT_SUCCESS);
@@ -23,7 +22,7 @@ void parse(char * line){
     if(*valid)
         printf("Res = %f\n", out);
     else
-        printf("Invalid Result");
+        printf("Invalid Result\n");
     spTreeDestroy(root);
     free(valid);
 }
@@ -43,7 +42,7 @@ SP_TREE *split(char *line){
     while(j !=0 ){
         //Magic!
         if(line[i] == '(' && (j++) == 1){
-            spTreePush(tree,split(line+i));
+            spTreePush(new,split(line+i));
         }
         //Go up one level
         if(line[i] == ')')
@@ -59,7 +58,8 @@ SP_TREE *split(char *line){
     return new;
 }
 
-double operate(double x, double y, SP_TREE_TYPE op){
+double operate(double x, double y, SP_TREE_TYPE op,bool * valid){
+    *valid = isValid(op,x,y);
     switch (op){
         case PLUS:
             return x+y;
@@ -79,7 +79,7 @@ double operate(double x, double y, SP_TREE_TYPE op){
 SP_TREE_TYPE getType(char *s){
     
 	//Check if it is a number
-    if(strlen(s) != 1) { return NUMBER; }
+    if(strlen(s)!=1 || (s[0] >= '0' && s[0] <= '9')) { return NUMBER; }
     
     //return the correct value
     switch(s[0]) {
@@ -112,29 +112,15 @@ bool isValid(SP_TREE_TYPE op, double x, double y){
     }
 }
 double spTreeEval(SP_TREE *tree,bool * valid){
-    //Error occured
-    if(!*valid)
-        return 0;
-
     //Leaf
     if(tree->type == NUMBER && tree->size == 0)
         return atoi(getRootStr(tree));
-
-    //Array representing the calculated values of the children
-    double * ans = malloc(10*sizeof(double));
-
-    for(int i = 0; i < tree->size; i++){
-        ans[i] = spTreeEval(tree->children[i],valid);
-    }
-
-    double  out = ans[0];
+    double out = atoi(getRootStr(tree->children[0]));
+    if(tree->size ==1)
+        return operate(0,out,tree->type,valid);
 
     for(int i=1; i <tree->size; i++){
-        if(!isValid(tree->type,out,ans[i])){
-           *valid = false;
-           return 0;
-        }
-        out = operate(out,ans[i],tree->type);
+        out = operate(out,spTreeEval(tree->children[i],valid),tree->type,valid);
     }
     return out;
 }

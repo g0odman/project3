@@ -28,6 +28,7 @@ void parse(char * line);
  *              A SP_TREE representing the string.
  */
 SP_TREE *split(char *line);
+
 /**
  * Perform the given mathematical operation on the two input numbers.
  *
@@ -38,10 +39,13 @@ SP_TREE *split(char *line);
  * 		double y - the second number;
  * @param
  * 		SP_TREE_TYPE op - The operation to perform.
+ * @param
+ * 		bool *valid- A pointer to a boolean indicating
+ * 		    whether or not the operation is valid.
  * @return
  *              The result of the mathematical operation
  */
-double operate(double x,double y, SP_TREE_TYPE op);
+double operate(double x,double y, SP_TREE_TYPE op, bool * valid);
 /**
  * Recieve a string and check its type
  *

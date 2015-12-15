@@ -75,8 +75,11 @@ void spTreePush(SP_TREE* tree,SP_TREE *child) {
  */
 
 char * getRootStr(SP_TREE *tree){
-    int length = (int) (strchr(tree->value,')') - tree->value-1);
-    char * ans = malloc(length);
+    char * close = strchr(tree->value + 1,')'), * open = strchr(tree->value + 1,'(');
+    int length = (int)( ( close < open ? close: open )  - tree->value -1);
+    if(open == NULL)
+        length = (int)(close - tree->value -1);
+    char * ans = malloc(length+1);
     strncpy(ans,tree->value +1,length);
     return ans;
 }
