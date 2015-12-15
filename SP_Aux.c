@@ -94,8 +94,11 @@ SP_TREE *split(char *line){
     }
 
     //Copy string
-    new->value = malloc(i+1);
-    strncpy(new->value,line,i);
+    char *temp = malloc(i+1);
+    strncpy(temp,line,i);
+    temp[i] = '\0';
+    if(!setValue(new,temp))
+        exit(EXIT_SUCCESS);
 
     //update type
     new->type = getType(getRootStr(new));
@@ -158,18 +161,23 @@ bool isValid(SP_TREE_TYPE op, double x, double y){
 }
 
 double spTreeEval(SP_TREE *tree, bool * valid){
+
     //leaf:
-    if(tree->type == NUMBER && tree->size == 0){
+    if(tree->type == NUMBER){
         return atoi(getRootStr(tree));
     }
 
     //calculate op on children:
-    double out = atoi(getRootStr(tree->children[0]));
+    double out = spTreeEval(tree->children[0],valid);
+
+    //In case of negative number
     if(tree->size ==1)
         return operate(0,out,tree->type,valid);
 
     for(int i=1; i < tree->size; i++){
-        out = operate(out,spTreeEval(tree->children[i],valid),tree->type,valid);
+        double temp = spTreeEval(tree->children[i],valid);
+        out = operate(out,temp,tree->type,valid);
     }
+
     return out;
 }

@@ -34,9 +34,9 @@ SP_TREE* spTreeCreate() {
  */
 void spTreeDestroy(SP_TREE* tree) {
 	//check node isn't null:
-	if(tree == NULL) { return; }
+    if(tree == NULL) { return; }
 	
-    for(int i =0; i<MAX_CHILD_NUM; i++){
+    for(int i =0; i<tree->size; i++){
         if(tree->children[i] != NULL){
         	spTreeDestroy(tree->children[i]);
         }
@@ -80,12 +80,14 @@ bool spTreePush(SP_TREE* tree,SP_TREE *child) {
  *              A copy of the substring representing the root.
  */
 char * getRootStr(SP_TREE *tree){
-    char * close = strchr(tree->value + 1,')'), * open = strchr(tree->value + 1,'(');
-    int length = (int)( ( close < open ? close: open )  - tree->value -1);
+    char * close = strchr(tree->value + 1,')'), * open = strchr(tree->value,'(');
+    int length = (int)( ( close < open ? close: open )  - tree->value +1);
     if(open == NULL)
-        length = (int)(close - tree->value -1);
+        length = (int)(close - tree->value +1);
+
     char * ans = malloc(length+1);
     strncpy(ans,tree->value +1,length);
+    ans[length] = '\0';
     return ans;
 }
 
@@ -105,5 +107,25 @@ char * getChildAtIndex(SP_TREE *tree,int index){
     char * ans = malloc(strlen(value));
     strncpy(value,ans,strlen(ans));
     return ans;
+}
+
+/**
+ * Returns a copy of the string of the index-th child.
+ *
+ * @param
+ * SP_TREE* Tree - Tree whose value is to be set.
+ *
+ * char *s - String to be inserted.
+ * 
+ * @return
+ *              A boolean indicating whether the insertion was successful.
+ */
+bool setValue(SP_TREE *tree,char *s){
+    if(s == NULL || strlen(s)==0)
+        return false;
+    if((tree->value = malloc(strlen(s)+1)) == NULL)
+        return false;
+    strcpy(tree->value,s);
+    return true;
 }
 

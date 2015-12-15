@@ -111,4 +111,17 @@ char * getRootStr(SP_TREE *tree);
  *              A copy of the substring representing the root.
  */
 char * getChildAtIndex(SP_TREE *tree,int index);
+
+/**
+ * Returns a copy of the string of the index-th child.
+ *
+ * @param
+ * SP_TREE* Tree - Tree whose value is to be set.
+ *
+ * char *s - String to be inserted.
+ * 
+ * @return
+ *              A boolean indicating whether the insertion was successful.
+ */
+bool setValue(SP_TREE *tree,char *s);
 #endif /* SP_TREE_H_ */
