@@ -72,7 +72,7 @@ SP_TREE *split(char *line){
 
     if((new = spTreeCreate()) == NULL){
         printf("Unexpected error occured!");
-        exit(EXIT_FAILURE);
+        exit(EXIT_SUCCESS);
     }
 
     //j is the number of brackets seen, i is the current place
@@ -80,10 +80,12 @@ SP_TREE *split(char *line){
 
     while(j > 0){
         //recursively parse children:
-        if(line[i] == '('){
-        	j++;
-        	if(j == 1)
-        		spTreePush(new,split(line+i)); //test whether this works!
+        if(line[i] == '(' && (++j) == 2){
+            if(!spTreePush(new,split(line+i))){
+                if(printf("Unexpected error occured!")!=0)
+                    exit(EXIT_FAILURE);
+                exit(EXIT_SUCCESS);
+            }
         }
         //Go up one level
         if(line[i] == ')')
@@ -157,8 +159,9 @@ bool isValid(SP_TREE_TYPE op, double x, double y){
 
 double spTreeEval(SP_TREE *tree, bool * valid){
     //leaf:
-    if(tree->type == NUMBER && tree->size == 0)
+    if(tree->type == NUMBER && tree->size == 0){
         return atoi(getRootStr(tree));
+    }
 
     //calculate op on children:
     double out = atoi(getRootStr(tree->children[0]));
