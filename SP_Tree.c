@@ -18,8 +18,8 @@ SP_TREE* spTreeCreate() {
         return NULL;
     
     //initialize:
-    s->children = malloc(sizeof(SP_TREE *)*10);
-    memset(s->children, 0, 10); //set to NULL
+    s->children = malloc(sizeof(SP_TREE *)*MAX_CHILD_NUM);
+    memset(s->children, 0, MAX_CHILD_NUM); //set to NULL
     s->value = NULL;
     return s;
 }
@@ -36,7 +36,7 @@ void spTreeDestroy(SP_TREE* tree) {
 	//check node isn't null:
 	if(tree == NULL) { return; }
 	
-    for(int i =0; i<10; i++){
+    for(int i =0; i<MAX_CHILD_NUM; i++){
         if(tree->children[i] != NULL){
         	spTreeDestroy(tree->children[i]);
         }
@@ -61,7 +61,7 @@ bool spTreePush(SP_TREE* tree,SP_TREE *child) {
     if(child == NULL)
         return false;
 
-    if(tree->size == 10)
+    if(tree->size == MAX_CHILD_NUM)
         return false;
 
     tree->children[tree->size] = child;

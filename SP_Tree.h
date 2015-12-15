@@ -1,6 +1,13 @@
 #ifndef SP_TREE_H_
 #define SP_TREE_H_
 #include <stdbool.h>
+
+/**
+ * At any moment, the tree will have at most 10 children
+ */
+#define MAX_CHILD_NUM	10
+
+
 /*************************************************
  * Definition of an element for the tree. The tree
  * element has a value and a type. The value is
