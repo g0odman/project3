@@ -19,7 +19,7 @@ SP_TREE* spTreeCreate() {
     
     //initialize:
     s->children = malloc(sizeof(SP_TREE *)*10);
-    memset(s->children, 0, 10);
+    memset(s->children, 0, 10); //set to NULL
     s->value = NULL;
     return s;
 }

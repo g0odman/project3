@@ -62,7 +62,7 @@ SP_TREE *split(char *line){
 }
 
 double operate(double x, double y, SP_TREE_TYPE op,bool * valid){
-    *valid = isValid(op,x,y);
+    *valid = (isValid(op,x,y) ? *valid : false);
     switch (op){
         case PLUS:
             return x+y;
