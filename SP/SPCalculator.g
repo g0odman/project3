@@ -38,20 +38,12 @@ exp returns [SPTree tree] :
 			   		$tree.insertChild($exp1.tree);
 			   		$tree.insertChild($exp2.tree); }
 			   		
-			   | exp1=exp oper=MUL exp2=exp  //multiplication
-			   		{ $tree = new SPTree($oper.text);
-			   		$tree.insertChild($exp1.tree);
-			   		$tree.insertChild($exp2.tree); }
-			   | exp1=exp oper=DIV exp2=exp  //division
+			   | exp1=exp oper=MUL_DIV exp2=exp  //multiplication and division
 			   		{ $tree = new SPTree($oper.text);
 			   		$tree.insertChild($exp1.tree);
 			   		$tree.insertChild($exp2.tree); }
 			   		
-			   | exp1=exp oper=PLUS exp2=exp  //addition
-			   		{ $tree = new SPTree($oper.text);
-			   		$tree.insertChild($exp1.tree);
-			   		$tree.insertChild($exp2.tree); }
-			   | exp1=exp oper=MINUS exp2=exp  //subtraction
+			   | exp1=exp oper=PLUS_MINUS exp2=exp  //addition and subtraction
 			   		{ $tree = new SPTree($oper.text);
 			   		$tree.insertChild($exp1.tree);
 			   		$tree.insertChild($exp2.tree); }
@@ -59,9 +51,7 @@ exp returns [SPTree tree] :
 			   | num=NUMBER  //terminate with number
 			   		{ $tree = new SPTree($num.text); }
 			   		
-			   | PLUS exp1=exp  //ignore extra plus signs
-			   		{ $tree = $exp1.tree; }
-			   | oper=MINUS exp1=exp  //flip sign with minus
+			   | oper=PLUS_MINUS exp1=exp  //allow extra plus or minus
 			   		{ $tree = new SPTree($oper.text);
 			   		SPTree zeroTree = new SPTree("0");
 			   		$tree.insertChild(zeroTree);
@@ -73,10 +63,8 @@ exp returns [SPTree tree] :
 TERMINATION: '<>';
 NUMBER: [0-9]+;
 WHITE_SPACE: [ \t\n\r]+ -> skip;
-PLUS: '+';
-MINUS: '-';
-MUL: '*';
-DIV: '/';
+PLUS_MINUS: '+' | '-';
+MUL_DIV: '*' | '/;
 DOLLAR: '$';
 OPEN_PAREN: '(';
 CLOSE_PAREN: ')';
