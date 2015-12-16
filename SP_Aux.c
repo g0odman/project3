@@ -55,10 +55,9 @@ SP_TREE *split(char *line){
     }
 
     //Copy the relevant string only:
-    char * close = strchr(line + 1,')'), * open = strchr(line,'(');
-	int length = (int)( ( close < open ? close: open )  - line +1);
-	if(open == NULL)
-		length = (int)(close - line +1);
+    int length = 1;
+    while(line[length] != '(' && line[length] != ')') { length++; }
+    length--;
 	char * temp = malloc(length+1);
 	strncpy(temp,line +1,length);
     temp[length] = '\0';
