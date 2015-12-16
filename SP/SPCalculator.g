@@ -31,7 +31,7 @@ stat returns [SPTree tree] : e1=TERMINATION {$tree = new SPTree($e1.text);}
 
 exp returns [SPTree tree] :
 			     OPEN_PAREN exp1=exp CLOSE_PAREN  //parenthesis
-					{$tree = $exp1.tree;}
+					{ $tree = $exp1.tree; }
 					
 			   | exp1=exp oper=DOLLAR exp2=exp  //dollar operation
 			   		{ $tree = new SPTree($oper.text);
@@ -64,7 +64,7 @@ TERMINATION: '<>';
 NUMBER: [0-9]+;
 WHITE_SPACE: [ \t\n\r]+ -> skip;
 PLUS_MINUS: '+' | '-';
-MUL_DIV: '*' | '/;
+MUL_DIV: '*' | '/';
 DOLLAR: '$';
 OPEN_PAREN: '(';
 CLOSE_PAREN: ')';
