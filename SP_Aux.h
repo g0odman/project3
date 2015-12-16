@@ -46,17 +46,7 @@ SP_TREE *split(char *line);
  *              The result of the mathematical operation
  */
 double operate(double x,double y, SP_TREE_TYPE op, bool * valid);
-/**
- * Recieve a string and check its type
- *
- *
- * @param
- * 		char * token - An input token. Checks if it is valid,
- * 				and if so then find its type.
- * @return
- *              The type of the token (as an enum).
- */
-SP_TREE_TYPE getType(char *s);
+
 /**
  * Check if a given mathematical operation is valid.
  *
@@ -70,7 +60,6 @@ SP_TREE_TYPE getType(char *s);
  * @return
  *              Whether the operation was valid or not.
  */
-
 bool isValid(SP_TREE_TYPE op, double x, double y);
 
 /**

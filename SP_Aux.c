@@ -54,7 +54,7 @@ SP_TREE *split(char *line){
         i++;
     }
 
-    //Copy string
+    //Copy the relevant string only:
     char * close = strchr(line + 1,')'), * open = strchr(line,'(');
 	int length = (int)( ( close < open ? close: open )  - line +1);
 	if(open == NULL)
@@ -66,8 +66,6 @@ SP_TREE *split(char *line){
         exit(EXIT_SUCCESS); //why success?
     free(temp);  //need to free!!
 
-    //update type
-    new->type = getType(getRootStr(new));
     return new;
 }
 
@@ -86,28 +84,6 @@ double operate(double x, double y, SP_TREE_TYPE op,bool * valid){
             return ((y-x+1)*(y+x))/2;
         default :
             return 0;
-    }
-}
-
-SP_TREE_TYPE getType(char *s){
-    
-	//Check if it is a number
-    if(strlen(s)!=1 || (s[0] >= '0' && s[0] <= '9')) { return NUMBER; }
-    
-    //return the correct value
-    switch(s[0]) {
-        case '+'  :
-             return PLUS;
-        case '-'  :
-             return MINUS;
-        case '$'  :
-             return DOLLAR;
-        case '*'  :
-             return MULTIPLICATION;
-        case '/'  :
-             return DIVISION;
-        default : /* Optional */
-             return UNKNOWN;
     }
 }
 

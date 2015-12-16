@@ -114,11 +114,48 @@ char * getChildAtIndex(SP_TREE *tree,int index){
  *              A boolean indicating whether the insertion was successful.
  */
 bool setValue(SP_TREE *tree,char *s){
+	//copy string:
     if(s == NULL || strlen(s)==0)
         return false;
     if((tree->value = malloc(strlen(s)+1)) == NULL)
         return false;
     strcpy(tree->value,s);
+
+    //update type:
+    tree->type = getType(s);
+
     return true;
+}
+
+/**
+ * Recieve a string and check its type
+ *
+ *
+ * @param
+ * 		char * token - An input token. Checks if it is valid,
+ * 				and if so then find its type.
+ * @return
+ *              The type of the token (as an enum).
+ */
+SP_TREE_TYPE getType(char *s){
+
+	//Check if it is a number
+    if(strlen(s)!=1 || (s[0] >= '0' && s[0] <= '9')) { return NUMBER; }
+
+    //return the correct value
+    switch(s[0]) {
+        case '+'  :
+             return PLUS;
+        case '-'  :
+             return MINUS;
+        case '$'  :
+             return DOLLAR;
+        case '*'  :
+             return MULTIPLICATION;
+        case '/'  :
+             return DIVISION;
+        default : /* Optional */
+             return UNKNOWN;
+    }
 }
 

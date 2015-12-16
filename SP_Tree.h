@@ -124,4 +124,17 @@ char * getChildAtIndex(SP_TREE *tree,int index);
  *              A boolean indicating whether the insertion was successful.
  */
 bool setValue(SP_TREE *tree,char *s);
+
+/**
+ * Recieve a string and check its type
+ *
+ *
+ * @param
+ * 		char * token - An input token. Checks if it is valid,
+ * 				and if so then find its type.
+ * @return
+ *              The type of the token (as an enum).
+ */
+SP_TREE_TYPE getType(char *s);
+
 #endif /* SP_TREE_H_ */
