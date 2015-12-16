@@ -72,7 +72,7 @@ bool spTreePush(SP_TREE* tree,SP_TREE *child) {
 }
 
 /**
- * Returns a copy of the string of the root node.
+ * Returns a pointer to the string of the root node.
  *
  * @param
  * SP_TREE* Tree - Pointer to a Tree from which to extract string.
@@ -81,15 +81,7 @@ bool spTreePush(SP_TREE* tree,SP_TREE *child) {
  *              A copy of the substring representing the root.
  */
 char * getRootStr(SP_TREE *tree){
-    char * close = strchr(tree->value + 1,')'), * open = strchr(tree->value,'(');
-    int length = (int)( ( close < open ? close: open )  - tree->value +1);
-    if(open == NULL)
-        length = (int)(close - tree->value +1);
-
-    char * ans = malloc(length+1);
-    strncpy(ans,tree->value +1,length);
-    ans[length] = '\0';
-    return ans;
+    return tree->value;
 }
 
 /**

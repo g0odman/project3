@@ -31,45 +31,6 @@ SP_TREE *split(char *line){
     //Value for node
     SP_TREE *new;
 
-    //-----------------
-//    size_t index_arr[MAX_CHILD_NUM];
-//    int str_pos = 1, arr_pos = 0;
-//    bool cont = true;
-//
-//    //find end of first value:
-//    while(line[str_pos] != '(' && line[str_pos] != ')'
-//    		&& line[str_pos] != '\0') {
-//    	str_pos++;
-//    }
-//    if(line[str_pos] == '\0') {
-//    	index_arr[arr_pos] = -1;
-//    	cont = false;
-//    }
-//    else if(line[str_pos] == ')') {
-//    	index_arr[arr_pos]=str_pos;
-//    	cont = false;
-//    }
-//    else {
-//    	index_arr[arr_pos]=str_pos;
-//    }
-//
-//    //find start and end of each child:
-//	for(arr_pos = 1; arr_pos<MAX_CHILD_NUM && cont; arr_pos++){
-//		int depth = 1;
-//		while(depth > 0){
-//			str_pos++;
-//			if(line[str_pos] == '(') { depth++; }
-//			else if(line[str_pos] == ')') { depth--; }
-//			else if(line[str_pos] == '\0') {
-//				index_arr[arr_pos] = -1;
-//				cont = false;
-//			}
-//		}
-//		str_pos++; //increment once found end
-//		index_arr[arr_pos] = str_pos;
-//	}
-    //-----------------
-
     if((new = spTreeCreate()) == NULL){
         printf("Unexpected error occured!");
         exit(EXIT_SUCCESS);
@@ -84,7 +45,7 @@ SP_TREE *split(char *line){
             if(!spTreePush(new,split(line+i))){
                 if(printf("Unexpected error occured!")!=0)
                     exit(EXIT_FAILURE);
-                exit(EXIT_SUCCESS);
+                exit(EXIT_SUCCESS); //why is this a success?
             }
         }
         //Go up one level
@@ -94,11 +55,16 @@ SP_TREE *split(char *line){
     }
 
     //Copy string
-    char *temp = malloc(i+1);
-    strncpy(temp,line,i);
-    temp[i] = '\0';
+    char * close = strchr(line + 1,')'), * open = strchr(line,'(');
+	int length = (int)( ( close < open ? close: open )  - line +1);
+	if(open == NULL)
+		length = (int)(close - line +1);
+	char * temp = malloc(length+1);
+	strncpy(temp,line +1,length);
+    temp[length] = '\0';
     if(!setValue(new,temp))
-        exit(EXIT_SUCCESS);
+        exit(EXIT_SUCCESS); //why success?
+    free(temp);  //need to free!!
 
     //update type
     new->type = getType(getRootStr(new));
