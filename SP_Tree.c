@@ -85,7 +85,7 @@ char * getRootStr(SP_TREE *tree){
 }
 
 /**
- * Returns a copy of the string of the index-th child.
+ * Returns a pointer to the index-th child of the root.
  *
  * @param
  * SP_TREE* Tree - Pointer to a Tree from which to take the child.
@@ -93,13 +93,10 @@ char * getRootStr(SP_TREE *tree){
  * int index - Child for which value is to be returned.
  * 
  * @return
- *              A copy of the substring representing the root.
+ *              A pointer to the relevant child
  */
-char * getChildAtIndex(SP_TREE *tree,int index){
-    char * value = tree->children[index]->value;
-    char * ans = malloc(strlen(value));
-    strncpy(value,ans,strlen(ans));
-    return ans;
+SP_TREE * getChildAtIndex(SP_TREE *tree,int index){
+    return tree->children[index];
 }
 
 /**
