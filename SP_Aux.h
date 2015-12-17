@@ -75,4 +75,25 @@ bool isValid(SP_TREE_TYPE op, double x, double y);
  *                  down.
  */
 double spTreeEval(SP_TREE *tree,bool *valid);
+/**
+ * Checks if the input string was an exit string
+ *
+ * @param
+ * 		char *line - A line to check.
+ * @return
+ *        A boolean indicating whether the strin was an exit code.
+ */
+bool isExit(char *line);
+/**
+ * Exits the program and frees all allocated memory while chcking
+ * that exiting was indeed succesful
+ *
+ * @param
+ *      SP_TREE *tree - A tree to destroy using spTreeDestroy.
+ * @param
+ * 		char *line - A string to free.
+ * @param
+ *      bool val - A boolean indicating whehter or not exiting was successful.
+ */
+void quit(SP_TREE *tree, char *line,bool val);
 #endif /* SP_Aux_H_ */

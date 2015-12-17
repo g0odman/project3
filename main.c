@@ -12,12 +12,14 @@ int main(){
     
     //main loop:
     while (fgets(line,MAX_LINE_LENGTH,stdin)!=NULL){
-
+        if(isExit(line))//Exit code was recieved
+            break;
         parse(line); //see SP_Aux
         
     }
-    
-    printf("Exiting...\n");
     free(line);
+    
+    if(printf("Exiting...\n") != 0)
+        exit(EXIT_FAILURE);
     return 0;
 }

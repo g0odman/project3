@@ -9,24 +9,22 @@
  */
 void parse(char * line){
 	//check whether exit command:
-    if(strncmp(line,"(<>)", 4) == 0 && strlen(line) == 5){
-        if(printf("Exiting...\n")!= 0){
-            exit(EXIT_FAILURE);
-        }
-        exit(EXIT_SUCCESS);
-    }
-
     //make tree and validate that they were succesfull:
-    bool valid = true;
+    bool valid = true, works;
     SP_TREE *root = split(line);
-
     //evaluate:
     double out =  spTreeEval(root,&valid);
-    if(valid)
-        printf("Res = %f\n", out);
-    else
-        printf("Invalid Result\n");
 
+    if(valid)
+        works = printf("Res = %f\n", out) > 0;
+    else
+        works = printf("Invalid Result\n") > 0;
+
+    
+    if(!works){
+        quit(root,line,false);
+    }
+    //In case function was successful
     spTreeDestroy(root);
 }
 
@@ -35,19 +33,16 @@ SP_TREE *split(char *line){
     SP_TREE *new;
 
     if((new = spTreeCreate()) == NULL){
-        printf("Unexpected error occured!");
-        exit(EXIT_SUCCESS);
+        quit(new,line,true);
     }
-
     //j is the number of brackets seen, i is the current place
     int j = 1,i=1;
     while(j > 0){  //recursively parse children:
         if(line[i] == '(' && (++j) == 2){
         	//if closed brackets on child, parse it:
             if(!spTreePush(new,split(line+i))){
-                if(printf("Unexpected error occured!")!=0)
-                    exit(EXIT_FAILURE);
-                exit(EXIT_SUCCESS);
+                //If parsing failed, exit function and check print value
+                quit(new,line,printf("Unexpected error occured!") >= 0);
             }
         }
         //Go up one level
@@ -55,7 +50,6 @@ SP_TREE *split(char *line){
             j--;
         i++;
     }
-
     //Copy the relevant string for this node:
     int length = 1;
     while(line[length] != '(' && line[length] != ')') { length++; }
@@ -63,9 +57,12 @@ SP_TREE *split(char *line){
 	char * temp = malloc(length+1);
 	strncpy(temp,line +1,length);
     temp[length] = '\0';
-    if(!setValue(new,temp))
-        exit(EXIT_SUCCESS); //why success?
+    if(!setValue(new,temp)){
+        free(line);
+        quit(new,temp,true);
+    }
     free(temp);
+
 
     return new;
 }
@@ -127,4 +124,15 @@ double spTreeEval(SP_TREE *tree, bool * valid){
     }
 
     return out;
+}
+//Check that the function is the correct length and correct string
+bool isExit(char *line){
+    return(strlen(line) == 5 &&strncmp(line,"(<>)", 4) == 0);
+}
+
+void quit(SP_TREE *tree, char *line,bool val){
+    if(tree != NULL)
+        spTreeDestroy(tree);
+    free(line);
+    exit(val ? EXIT_SUCCESS : EXIT_FAILURE );
 }
