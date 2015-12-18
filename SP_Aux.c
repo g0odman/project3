@@ -16,7 +16,7 @@ void parse(char * line){
     double out =  spTreeEval(root,&valid);
 
     if(valid)
-        works = printf("Res = %f\n", out) > 0;
+        works = printf("res = %f\n", out) > 0;
     else
         works = printf("Invalid Result\n") > 0;
 
