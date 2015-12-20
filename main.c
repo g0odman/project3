@@ -19,7 +19,7 @@ int main(){
     }
     free(line);
     
-    if(printf("Exiting...\n") != 0)
+    if(printf("Exiting...\n") < 0)
         exit(EXIT_FAILURE);
     return 0;
 }

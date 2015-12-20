@@ -16,12 +16,12 @@ void parse(char * line){
     double out =  spTreeEval(root,&valid);
 
     if(valid)
-        works = printf("res = %f\n", out) > 0;
+        works = printf("res = %f\n", out) < 0;
     else
-        works = printf("Invalid Result\n") > 0;
+        works = printf("Invalid Result\n") < 0;
 
-    
-    if(!works){
+   //If works is set, the program failed 
+    if(works){
         quit(root,line,false);
     }
     //In case function was successful
@@ -55,6 +55,8 @@ SP_TREE *split(char *line){
     while(line[length] != '(' && line[length] != ')') { length++; }
     length--;
 	char * temp = malloc(length+1);
+    if(temp == NULL)
+        quit(new,line,true);
 	strncpy(temp,line +1,length);
     temp[length] = '\0';
     if(!setValue(new,temp)){
