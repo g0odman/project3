@@ -16,4 +16,3 @@ SP_Aux.o: SP_Aux.c SP_Aux.h
 
 clean:
 	rm -f main.o SP_Aux.o SP_Tree.o;cd SP; make clean
-	#Invoke a remove command to clean up the current Directory (NOTE: The directory SP is already Clean)
